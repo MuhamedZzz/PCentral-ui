@@ -45,13 +45,13 @@ export const SHOWCASE_BUILDS: ShowcaseBuild[] = [
   {
     id: "budget-builder",
     name: "Budget Builder",
-    image: "/builds/budget-builder.jpg",
+    image: "/builds/budget-builder.png",
     description: "Affordable performance",
   },
   {
     id: "workstation-pro",
     name: "Workstation Pro",
-    image: "/builds/workstation-pro.jpg",
+    image: "/builds/workstation-pro.png",
     description: "Professional workstation",
   },
 ];
