@@ -1,8 +1,16 @@
-export default function Home() {
+// app/page.tsx or pages/index.tsx (depending on your Next.js version)
+"use client";
+
+import React from "react";
+import { Box } from "@mui/material";
+import HeroSection from "../components/Home";
+
+const HomePage: React.FC = () => {
   return (
-    <>
-      <h1>PCentral</h1>
-      <h2>Assemble. Test. Thrive.</h2>
-    </>
+    <Box sx={{ width: "100%", minHeight: "100vh" }}>
+      <HeroSection />
+    </Box>
   );
-}
+};
+
+export default HomePage;
