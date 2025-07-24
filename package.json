@@ -15,6 +15,7 @@
     "@mui/material": "^7.2.0",
     "@mui/styled-engine-sc": "^7.2.0",
     "axios": "^1.11.0",
+    "cookies": "^0.9.1",
     "lucide-react": "^0.525.0",
     "next": "15.4.1",
     "react": "^19.1.0",

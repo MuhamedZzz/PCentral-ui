@@ -18,8 +18,8 @@ import { styled } from "@mui/material/styles";
 import Link from "next/link";
 import Image from "next/image";
 import PersonIcon from "@mui/icons-material/Person";
-import DesignServicesIcon from "@mui/icons-material/DesignServices"; // pen+ruler
-import InventoryIcon from "@mui/icons-material/Inventory"; // stack/products
+import DesignServicesIcon from "@mui/icons-material/DesignServices";
+import InventoryIcon from "@mui/icons-material/Inventory";
 import ComputerIcon from "@mui/icons-material/Computer";
 import CompareArrowsIcon from "@mui/icons-material/CompareArrows";
 import PhotoLibraryIcon from "@mui/icons-material/PhotoLibrary";
@@ -210,7 +210,16 @@ const FooterLink = styled(Link)(() => ({
   },
 }));
 
-const Sidebar: React.FC<SidebarProps> = ({ isOpen = true, onToggle }) => {
+// Updated interface to include auth modal handler
+interface ExtendedSidebarProps extends SidebarProps {
+  onOpenAuthModal: (mode: "login" | "signup") => void;
+}
+
+const Sidebar: React.FC<ExtendedSidebarProps> = ({
+  isOpen = true,
+  onToggle,
+  onOpenAuthModal,
+}) => {
   const theme = useTheme();
 
   // Map navigation item id to icon
@@ -338,12 +347,21 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen = true, onToggle }) => {
         ))}
       </NavigationList>
 
-      {/* Auth Buttons */}
+      {/* Auth Buttons - Updated to use onOpenAuthModal */}
       <AuthButtonContainer>
-        <SignUpButton variant="contained" startIcon={<PersonIcon />}>
+        <SignUpButton
+          variant="contained"
+          startIcon={<PersonIcon />}
+          onClick={() => onOpenAuthModal("signup")}
+        >
           Sign Up
         </SignUpButton>
-        <LoginButton variant="outlined">Log In</LoginButton>
+        <LoginButton
+          variant="outlined"
+          onClick={() => onOpenAuthModal("login")}
+        >
+          Log In
+        </LoginButton>
       </AuthButtonContainer>
 
       {/* Footer Links */}

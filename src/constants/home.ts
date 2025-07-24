@@ -39,7 +39,7 @@ export const SHOWCASE_BUILDS: ShowcaseBuild[] = [
   {
     id: "gaming-beast",
     name: "Gaming Beast",
-    image: "/builds/gaming-beast.png", // You'll need to add these images
+    image: "/builds/gaming-beast.png",
     description: "High-end gaming setup",
   },
   {

@@ -14,8 +14,8 @@ import {
 import { styled, keyframes } from "@mui/material/styles";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import DownloadIcon from "@mui/icons-material/Download";
-import RocketLaunchIcon from "@mui/icons-material/RocketLaunch";
+import SearchIcon from "@mui/icons-material/Search";
+import DesignServicesIcon from "@mui/icons-material/DesignServices";
 import { HeroProps } from "../types/home";
 import {
   FLOATING_PARTS,
@@ -121,14 +121,14 @@ const Badge = styled(Chip)(() => ({
   fontWeight: 500,
   padding: "8px 16px",
   height: "auto",
-  animation: `${glow} 3s ease-in-out infinite`,
+  animation: `${glow} 10s ease-in-out infinite`,
   "& .MuiChip-label": {
     padding: "0 8px",
   },
 }));
 
 const MainTitle = styled(Typography)(() => ({
-  fontSize: "clamp(3rem, 8vw, 5rem)",
+  fontSize: "clamp(3rem, 8vw, 4rem)",
   fontWeight: 700,
   background: "linear-gradient(135deg, #ffffff 0%, #e91e63 50%, #ffffff 100%)",
   backgroundClip: "text",
@@ -161,7 +161,7 @@ const ButtonContainer = styled(Box)(() => ({
   display: "flex",
   gap: "24px",
   justifyContent: "center",
-  marginBottom: "80px",
+  marginBottom: "40px",
   flexWrap: "wrap",
 }));
 
@@ -207,11 +207,11 @@ const ShowcaseSection = styled(Box)(() => ({
 }));
 
 const ShowcaseTitle = styled(Typography)(() => ({
-  fontSize: "2rem",
-  fontWeight: 600,
+  fontSize: "1rem",
+  fontWeight: 300,
   color: "#ffffff",
   textAlign: "center",
-  marginBottom: "40px",
+  marginBottom: "20px",
 }));
 
 const ShowcaseGrid = styled(Box)(() => ({
@@ -233,7 +233,6 @@ const ShowcaseCard = styled(Card)(() => ({
   overflow: "hidden",
   transition: "all 0.3s ease",
   "&:hover": {
-    transform: "translateY(-8px)",
     boxShadow: "0 16px 48px rgba(0, 0, 0, 0.3)",
     borderColor: "rgba(233, 30, 99, 0.3)",
   },
@@ -351,15 +350,14 @@ const HeroSection: React.FC<HeroProps> = ({ className }) => {
         {/* Action Buttons */}
         <ButtonContainer>
           <PrimaryButton
-            startIcon={<RocketLaunchIcon />}
+            startIcon={<DesignServicesIcon />}
             onClick={handleStartBuilding}
             size="large"
           >
             {HERO_CONTENT.buttons.primary.text}
           </PrimaryButton>
           <SecondaryButton
-            startIcon={<DownloadIcon />}
-            component={Link}
+            startIcon={<SearchIcon />}
             href={HERO_CONTENT.buttons.secondary.href}
             size="large"
           >

@@ -1,9 +1,10 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { Box, CssBaseline, ThemeProvider, createTheme } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import Sidebar from "./Sidebar";
+import AuthModal from "./auth/AuthModal";
 
 const darkTheme = createTheme({
   palette: {
@@ -44,12 +45,35 @@ interface LayoutProps {
 }
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
+  const [authModalOpen, setAuthModalOpen] = useState(false);
+  const [authMode, setAuthMode] = useState<"login" | "signup">("login");
+
+  const handleOpenAuthModal = (mode: "login" | "signup") => {
+    setAuthMode(mode);
+    setAuthModalOpen(true);
+  };
+
+  const handleCloseAuthModal = () => {
+    setAuthModalOpen(false);
+  };
+
+  const handleSwitchAuthMode = (mode: "login" | "signup") => {
+    setAuthMode(mode);
+  };
+
   return (
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />
       <MainContainer>
-        <Sidebar />
+        <Sidebar onOpenAuthModal={handleOpenAuthModal} />
         <ContentContainer>{children}</ContentContainer>
+
+        <AuthModal
+          open={authModalOpen}
+          onClose={handleCloseAuthModal}
+          mode={authMode}
+          onSwitchMode={handleSwitchAuthMode}
+        />
       </MainContainer>
     </ThemeProvider>
   );

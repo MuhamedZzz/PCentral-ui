@@ -20,3 +20,8 @@ export interface SidebarProps {
   isOpen?: boolean;
   onToggle?: () => void;
 }
+
+export interface SidebarProps {
+  isOpen?: boolean;
+  onToggle?: () => void;
+}
