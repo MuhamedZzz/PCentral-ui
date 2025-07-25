@@ -93,6 +93,16 @@ const StyledTextField = styled(TextField)(() => ({
     "&.Mui-focused fieldset": {
       borderColor: "#e91e63",
     },
+    "& input:-webkit-autofill": {
+      WebkitBoxShadow: "0 0 0px 1000px #1a1a1a inset !important",
+      WebkitTextFillColor: "#ffffff !important",
+    },
+    "& input:-webkit-autofill:hover": {
+      WebkitBoxShadow: "0 0 0px 1000px #1a1a1a inset !important",
+    },
+    "& input:-webkit-autofill:focus": {
+      WebkitBoxShadow: "0 0 0px 1000px #1a1a1a inset !important",
+    },
   },
   "& .MuiInputLabel-root": {
     color: "#888888",
@@ -101,7 +111,7 @@ const StyledTextField = styled(TextField)(() => ({
     },
   },
   "& .MuiOutlinedInput-input": {
-    padding: "14px 16px",
+    padding: "12px 16px",
     fontSize: "14px",
     "&::placeholder": {
       color: "#666666",
@@ -113,22 +123,32 @@ const StyledTextField = styled(TextField)(() => ({
 const PasswordContainer = styled(Box)(() => ({
   position: "relative",
   marginBottom: "8px",
+  "& input:-webkit-autofill": {
+    WebkitBoxShadow: "0 0 0px 1000px #1a1a1a inset !important",
+    WebkitTextFillColor: "#ffffff !important",
+  },
+  "& input:-webkit-autofill:hover": {
+    WebkitBoxShadow: "0 0 0px 1000px #1a1a1a inset !important",
+  },
+  "& input:-webkit-autofill:focus": {
+    WebkitBoxShadow: "0 0 0px 1000px #1a1a1a inset !important",
+  },
 }));
 
 const SubmitButton = styled(Button)(() => ({
-  backgroundColor: "#8e44ad",
+  backgroundColor: "#e91e63",
   color: "#ffffff",
-  padding: "14px 16px",
+  padding: "9px 16px",
   borderRadius: "8px",
   textTransform: "none",
   fontSize: "14px",
   fontWeight: 600,
   marginBottom: "24px",
   "&:hover": {
-    backgroundColor: "#7d3c98",
+    backgroundColor: "#ff397b",
   },
   "&:disabled": {
-    backgroundColor: "#444444",
+    backgroundColor: "#8d123b",
     color: "#888888",
   },
 }));

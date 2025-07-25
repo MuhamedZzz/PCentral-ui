@@ -1,3 +1,4 @@
+// types/sidebar.ts
 export interface NavigationItem {
   id: string;
   label: string;
@@ -14,11 +15,6 @@ export interface SocialLink {
 export interface FooterLink {
   label: string;
   href: string;
-}
-
-export interface SidebarProps {
-  isOpen?: boolean;
-  onToggle?: () => void;
 }
 
 export interface SidebarProps {

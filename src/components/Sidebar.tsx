@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Drawer,
@@ -13,6 +13,11 @@ import {
   IconButton,
   Divider,
   useTheme,
+  Menu,
+  MenuItem,
+  Avatar,
+  ButtonProps,
+  ListItemButtonProps,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import Link from "next/link";
@@ -24,15 +29,19 @@ import ComputerIcon from "@mui/icons-material/Computer";
 import CompareArrowsIcon from "@mui/icons-material/CompareArrows";
 import PhotoLibraryIcon from "@mui/icons-material/PhotoLibrary";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import LogoutIcon from "@mui/icons-material/Logout";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { FaDiscord } from "react-icons/fa";
 import { SidebarProps } from "../types/sidebar";
+import { authService } from "../services/authServices";
+import { cookieUtils } from "../utils/cookies";
 import {
   NAVIGATION_ITEMS,
   SOCIAL_LINKS,
   FOOTER_LINKS,
 } from "../constants/sidebar";
 
-// Styled components
 const SIDEBAR_WIDTH = 320;
 
 const StyledDrawer = styled(Drawer)(({ theme }) => ({
@@ -52,19 +61,6 @@ const LogoContainer = styled(Box)(({ theme }) => ({
   alignItems: "center",
   padding: theme.spacing(2),
   marginBottom: theme.spacing(1),
-}));
-
-const LogoPlaceholder = styled(Box)(({ theme }) => ({
-  width: 32,
-  height: 32,
-  backgroundColor: "#e91e63",
-  borderRadius: "6px",
-  marginRight: theme.spacing(1.5),
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  fontSize: "16px",
-  fontWeight: "bold",
 }));
 
 const BrandContainer = styled(Box)(() => ({
@@ -94,7 +90,7 @@ const SocialContainer = styled(Box)(({ theme }) => ({
   marginBottom: theme.spacing(2),
 }));
 
-const SocialButton = styled(Button)(({ theme }) => ({
+const SocialButton = styled(Button)<ButtonProps>(({ theme }) => ({
   display: "flex",
   alignItems: "center",
   gap: theme.spacing(1),
@@ -105,24 +101,23 @@ const SocialButton = styled(Button)(({ theme }) => ({
   fontSize: "15px",
   boxShadow: "none",
   textTransform: "none",
-  color: "#fff", // Always white text
+  color: "#fff",
   "& .MuiSvgIcon-root, & svg": {
-    // Icon color per platform
     color: "inherit",
   },
   "&.discord": {
-    backgroundColor: "rgba(88,101,242,0.18)", // Discord icon color, low opacity
+    backgroundColor: "rgba(88,101,242,0.18)",
     "& .MuiSvgIcon-root, & svg": {
-      color: "#5865F2", // Discord icon color
+      color: "#5865F2",
     },
     "&:hover": {
       backgroundColor: "rgba(88,101,242,0.32)",
     },
   },
   "&.linkedin": {
-    backgroundColor: "rgba(0,119,181,0.18)", // LinkedIn icon color, low opacity
+    backgroundColor: "rgba(0,119,181,0.18)",
     "& .MuiSvgIcon-root, & svg": {
-      color: "#0077B5", // LinkedIn icon color
+      color: "#0077B5",
     },
     "&:hover": {
       backgroundColor: "rgba(0,119,181,0.32)",
@@ -137,25 +132,27 @@ const NavigationList = styled(List)(() => ({
   },
 }));
 
-const NavigationButton = styled(ListItemButton)(({ theme }) => ({
-  paddingLeft: theme.spacing(2),
-  paddingRight: theme.spacing(2),
-  paddingTop: theme.spacing(1),
-  paddingBottom: theme.spacing(1),
-  margin: `0 ${theme.spacing(1)}`,
-  borderRadius: "6px",
-  display: "flex",
-  alignItems: "center",
-  gap: theme.spacing(2),
-  "&:hover": {
-    backgroundColor: "#333",
-  },
-  "& .MuiListItemText-primary": {
-    fontSize: "15px",
-    fontWeight: 500,
-    color: "#ffffff",
-  },
-}));
+const NavigationButton = styled(ListItemButton)<ListItemButtonProps>(
+  ({ theme }) => ({
+    paddingLeft: theme.spacing(2),
+    paddingRight: theme.spacing(2),
+    paddingTop: theme.spacing(1),
+    paddingBottom: theme.spacing(1),
+    margin: `0 ${theme.spacing(1)}`,
+    borderRadius: "6px",
+    display: "flex",
+    alignItems: "center",
+    gap: theme.spacing(2),
+    "&:hover": {
+      backgroundColor: "#333",
+    },
+    "& .MuiListItemText-primary": {
+      fontSize: "15px",
+      fontWeight: 500,
+      color: "#ffffff",
+    },
+  })
+);
 
 const AuthButtonContainer = styled(Box)(({ theme }) => ({
   marginTop: "auto",
@@ -193,6 +190,43 @@ const LoginButton = styled(AuthButton)(() => ({
   },
 }));
 
+const ProfileButton = styled(Button)(({ theme }) => ({
+  borderRadius: "6px",
+  textTransform: "none",
+  fontSize: "14px",
+  fontWeight: 500,
+  padding: theme.spacing(1, 2),
+  backgroundColor: "transparent",
+  color: "#ffffff",
+  border: "1px solid #444",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "space-between",
+  gap: theme.spacing(1),
+  width: "100%",
+  "&:hover": {
+    backgroundColor: "#333",
+  },
+}));
+
+const StyledMenu = styled(Menu)(({ theme }) => ({
+  "& .MuiPaper-root": {
+    backgroundColor: "#2a2a2a",
+    color: "#ffffff",
+    border: "1px solid #444",
+    borderRadius: "8px",
+    minWidth: "200px",
+    marginTop: theme.spacing(0.5),
+  },
+  "& .MuiMenuItem-root": {
+    padding: theme.spacing(1.5, 2),
+    fontSize: "14px",
+    "&:hover": {
+      backgroundColor: "#333",
+    },
+  },
+}));
+
 const FooterContainer = styled(Box)(({ theme }) => ({
   padding: theme.spacing(0, 2, 2, 2),
   display: "flex",
@@ -221,6 +255,89 @@ const Sidebar: React.FC<ExtendedSidebarProps> = ({
   onOpenAuthModal,
 }) => {
   const theme = useTheme();
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [username, setUsername] = useState<string>("");
+  const [userDataLoaded, setUserDataLoaded] = useState<boolean>(false);
+  const [profileMenuAnchorEl, setProfileMenuAnchorEl] =
+    useState<null | HTMLElement>(null);
+
+  // Fetch user data when authenticated
+  const fetchUserData = async () => {
+    try {
+      const userData = await authService.getUserData();
+
+      // Store user data in cookies
+      cookieUtils.set("id", userData.id.toString(), 7);
+      cookieUtils.set("username", userData.username, 7);
+      cookieUtils.set("bio", userData.bio || "", 7);
+      cookieUtils.set("avatarUrl", userData.avatarUrl || "", 7);
+
+      setUsername(userData.username);
+      setUserDataLoaded(true);
+    } catch (error) {
+      console.error("Failed to fetch user data:", error);
+      // If fetching fails, try to get from cookies as fallback
+      const storedUsername = cookieUtils.get("userName") || "";
+      setUsername(storedUsername);
+      setUserDataLoaded(true);
+    }
+  };
+
+  // Check authentication status on component mount
+  useEffect(() => {
+    const checkAuthStatus = async () => {
+      const authToken = cookieUtils.get("authToken");
+      if (authToken) {
+        if (!isAuthenticated) {
+          setIsAuthenticated(true);
+          await fetchUserData();
+        }
+      } else {
+        if (isAuthenticated) {
+          setIsAuthenticated(false);
+          setUserDataLoaded(false);
+          setUsername("");
+        }
+      }
+    };
+
+    // Run immediately
+    checkAuthStatus();
+
+    // Then every second to keep auth state in sync
+    const interval = setInterval(checkAuthStatus, 1000);
+    return () => clearInterval(interval);
+  }, [isAuthenticated]);
+
+  // Handle profile menu
+  const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
+    setProfileMenuAnchorEl(event.currentTarget);
+  };
+
+  const handleProfileMenuClose = () => {
+    setProfileMenuAnchorEl(null);
+  };
+
+  // Handle logout
+  const handleLogout = () => {
+    cookieUtils.remove("authToken");
+    cookieUtils.remove("username");
+    cookieUtils.remove("id");
+    cookieUtils.remove("email");
+    cookieUtils.remove("bio");
+    cookieUtils.remove("avatarUrl");
+    setIsAuthenticated(false);
+    setUsername("");
+    setUserDataLoaded(false);
+    handleProfileMenuClose();
+    window.location.href = "/";
+  };
+
+  // Handle profile navigation
+  const handleProfileClick = () => {
+    window.location.href = "/profile";
+    handleProfileMenuClose();
+  };
 
   // Map navigation item id to icon
   const getNavIcon = (id: string) => {
@@ -229,7 +346,7 @@ const Sidebar: React.FC<ExtendedSidebarProps> = ({
         return <DesignServicesIcon sx={{ fontSize: 22 }} />;
       case "products":
         return <InventoryIcon sx={{ fontSize: 22 }} />;
-      case "my-build":
+      case "my-builds":
         return <ComputerIcon sx={{ fontSize: 22 }} />;
       case "compare":
         return <CompareArrowsIcon sx={{ fontSize: 22 }} />;
@@ -268,18 +385,12 @@ const Sidebar: React.FC<ExtendedSidebarProps> = ({
   const requiredNavIds = [
     "pc-builder",
     "products",
-    "my-build",
+    "my-builds",
     "compare",
     "part-gallery",
   ];
   const navItems = requiredNavIds
-    .map(
-      (id) =>
-        NAVIGATION_ITEMS.find((item) => item.id === id) ||
-        (id === "my-build"
-          ? { id: "my-build", label: "My Build", href: "/my-build" }
-          : null)
-    )
+    .map((id) => NAVIGATION_ITEMS.find((item) => item.id === id)!)
     .filter(Boolean);
 
   return (
@@ -316,52 +427,125 @@ const Sidebar: React.FC<ExtendedSidebarProps> = ({
       {/* Social Links */}
       <SocialContainer>
         {SOCIAL_LINKS.map((social) => (
-          <SocialButton
+          <Link
             key={social.platform}
-            className={social.platform}
-            component={Link}
             href={social.href}
-            startIcon={getSocialIcon(social.platform)}
-            {...(social.platform === "discord" || social.platform === "linkedin"
-              ? { target: "_blank", rel: "noopener noreferrer" }
-              : {})}
+            passHref
+            legacyBehavior
+            target="_blank"
+            rel="noopener noreferrer"
           >
-            {getSocialLabel(social.platform)}
-          </SocialButton>
+            <SocialButton
+              component="a"
+              className={social.platform}
+              startIcon={getSocialIcon(social.platform)}
+            >
+              {getSocialLabel(social.platform)}
+            </SocialButton>
+          </Link>
         ))}
       </SocialContainer>
 
       {/* Navigation Links */}
       <NavigationList>
         {navItems.map((item) => (
-          <ListItem key={item!.id}>
-            <NavigationButton
-              component="a"
-              href={item!.href}
-              sx={{ textDecoration: "none", color: "inherit" }}
-            >
-              {getNavIcon(item!.id)}
-              <ListItemText primary={item!.label} />
-            </NavigationButton>
+          <ListItem key={item.id}>
+            <Link href={item.href} passHref legacyBehavior>
+              <NavigationButton
+                component="a" // now truly renders an anchor
+                disabled={
+                  !isAuthenticated &&
+                  ["my-builds", "compare", "part-gallery"].includes(item.id)
+                }
+                sx={{
+                  textDecoration: "none",
+                  color:
+                    !isAuthenticated &&
+                    ["my-builds", "compare", "part-gallery"].includes(item.id)
+                      ? "#666"
+                      : "inherit",
+                }}
+              >
+                {getNavIcon(item.id)}
+                <ListItemText primary={item.label} />
+              </NavigationButton>
+            </Link>
           </ListItem>
         ))}
       </NavigationList>
 
-      {/* Auth Buttons - Updated to use onOpenAuthModal */}
+      {/* Auth Section - Conditional Rendering */}
       <AuthButtonContainer>
-        <SignUpButton
-          variant="contained"
-          startIcon={<PersonIcon />}
-          onClick={() => onOpenAuthModal("signup")}
-        >
-          Sign Up
-        </SignUpButton>
-        <LoginButton
-          variant="outlined"
-          onClick={() => onOpenAuthModal("login")}
-        >
-          Log In
-        </LoginButton>
+        {isAuthenticated ? (
+          <>
+            {/* Profile Button with Dropdown */}
+            <ProfileButton
+              onClick={handleProfileMenuOpen}
+              endIcon={<KeyboardArrowDownIcon />}
+              disabled={!userDataLoaded}
+            >
+              <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                <Avatar
+                  sx={{
+                    width: 24,
+                    height: 24,
+                    backgroundColor: "#e91e63",
+                    fontSize: "12px",
+                  }}
+                >
+                  {username ? username.charAt(0).toUpperCase() : "U"}
+                </Avatar>
+                {username || "User"}
+              </Box>
+            </ProfileButton>
+
+            {/* Profile Menu */}
+            <StyledMenu
+              anchorEl={profileMenuAnchorEl}
+              open={Boolean(profileMenuAnchorEl)}
+              onClose={handleProfileMenuClose}
+              anchorOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              transformOrigin={{
+                vertical: "bottom",
+                horizontal: "right",
+              }}
+            >
+              <MenuItem onClick={handleProfileClick}>
+                <PersonIcon sx={{ mr: 1, fontSize: 20 }} />
+                Profile
+              </MenuItem>
+              <MenuItem onClick={handleProfileMenuClose}>
+                <FavoriteIcon sx={{ mr: 1, fontSize: 20 }} />
+                Favorites
+              </MenuItem>
+              <Divider sx={{ backgroundColor: "#444" }} />
+              <MenuItem onClick={handleLogout}>
+                <LogoutIcon sx={{ mr: 1, fontSize: 20 }} />
+                Log out
+              </MenuItem>
+            </StyledMenu>
+          </>
+        ) : (
+          <>
+            {/* Login/Signup Buttons */}
+            <SignUpButton
+              variant="contained"
+              startIcon={<PersonIcon />}
+              onClick={() => onOpenAuthModal("signup")}
+            >
+              Sign Up
+            </SignUpButton>
+            <LoginButton
+              variant="outlined"
+              onClick={() => onOpenAuthModal("login")}
+            >
+              Log In
+            </LoginButton>
+          </>
+        )}
       </AuthButtonContainer>
 
       {/* Footer Links */}

@@ -278,12 +278,12 @@ const HeroSection: React.FC<HeroProps> = ({ className }) => {
       {FLOATING_PARTS.map((part) => (
         <FloatingPart
           key={part.id}
-          $top={part.position.top}
-          $left={part.position.left}
-          $right={(part.position as any).right}
-          $bottom={part.position.bottom}
+          top={part.position.top}
+          left={part.position.left}
+          right={(part.position as any).right}
+          bottom={part.position.bottom}
           $duration={part.animation.duration}
-          $delay={part.animation.delay}
+          delay={part.animation.delay}
         >
           <Box
             component="img"

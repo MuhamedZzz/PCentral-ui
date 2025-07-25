@@ -43,7 +43,7 @@ export const SOCIAL_LINKS: SocialLink[] = [
 
 export const FOOTER_LINKS: FooterLink[] = [
   { label: "Contact Us", href: "/contact" },
-  { label: "GitHub", href: "#" },
+  { label: "GitHub", href: "https://github.com/MuhamedZzz" },
   { label: "FAQ", href: "/faq" },
   { label: "Privacy Policy", href: "/privacy" },
   { label: "Terms of Service", href: "/terms" },

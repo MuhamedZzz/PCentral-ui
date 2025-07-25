@@ -67,27 +67,54 @@ const AuthModal: React.FC<AuthModalProps> = ({
 
     try {
       let response;
+      console.log(`Attempting ${mode}...`);
+
       if (mode === "login") {
         response = await authService.login(data);
       } else {
         response = await authService.register(data);
       }
 
-      // Store token in cookies
+      console.log("Auth response:", response);
+
+      // Store token and email from auth response
       cookieUtils.set("authToken", response.token, 7);
+      cookieUtils.set("email", response.email, 7);
 
-      setSuccess(
-        mode === "login"
-          ? "Logged in successfully!"
-          : "Account created successfully!"
-      );
+      console.log("Cookies set, fetching user data...");
 
-      // Close modal after success
-      setTimeout(() => {
-        onClose();
-        setSuccess(null);
-      }, 1500);
+      // Fetch user data from /api/users/me endpoint using the token directly
+      try {
+        const userData = await authService.getUserData(response.token);
+        console.log("User data fetched:", userData);
+
+        setSuccess(
+          mode === "login"
+            ? "Logged in successfully!"
+            : "Account created successfully!"
+        );
+
+        // Close modal after success
+        setTimeout(() => {
+          onClose();
+          setSuccess(null);
+        }, 1500);
+      } catch (userDataError) {
+        // If fetching user data fails, still consider auth successful but show warning
+        console.error("Failed to fetch user data:", userDataError);
+        setSuccess(
+          mode === "login"
+            ? "Logged in successfully! (Some profile data may be missing)"
+            : "Account created successfully! (Some profile data may be missing)"
+        );
+
+        setTimeout(() => {
+          onClose();
+          setSuccess(null);
+        }, 2000);
+      }
     } catch (err: any) {
+      console.error("Auth error:", err);
       setError(
         err.response?.data?.message || "Something went wrong. Please try again."
       );

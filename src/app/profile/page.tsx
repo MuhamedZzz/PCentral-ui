@@ -1,3 +1,10 @@
-export default function ProfilePage() {
-  return <div>User Profile</div>;
-}
+"use client";
+
+import React from "react";
+import Profile from "@/components/Profile";
+
+const ProfilePage: React.FC = () => {
+  return <Profile />;
+};
+
+export default ProfilePage;
