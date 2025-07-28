@@ -424,52 +424,43 @@ const Sidebar: React.FC<ExtendedSidebarProps> = ({
         </LogoContainer>
       </Link>
 
-      {/* Social Links */}
+      {/* SOCIAL LINKS */}
       <SocialContainer>
         {SOCIAL_LINKS.map((social) => (
-          <Link
+          <SocialButton
             key={social.platform}
+            component={Link}
             href={social.href}
-            passHref
-            legacyBehavior
             target="_blank"
             rel="noopener noreferrer"
+            className={social.platform}
+            startIcon={getSocialIcon(social.platform)}
+            sx={{ textDecoration: "none" }}
           >
-            <SocialButton
-              component="a"
-              className={social.platform}
-              startIcon={getSocialIcon(social.platform)}
-            >
-              {getSocialLabel(social.platform)}
-            </SocialButton>
-          </Link>
+            {getSocialLabel(social.platform)}
+          </SocialButton>
         ))}
       </SocialContainer>
 
-      {/* Navigation Links */}
+      {/* NAVIGATION LINKS */}
       <NavigationList>
         {navItems.map((item) => (
-          <ListItem key={item.id}>
-            <Link href={item.href} passHref legacyBehavior>
-              <NavigationButton
-                component="a" // now truly renders an anchor
-                disabled={
-                  !isAuthenticated &&
-                  ["my-builds", "compare", "part-gallery"].includes(item.id)
-                }
-                sx={{
-                  textDecoration: "none",
-                  color:
-                    !isAuthenticated &&
-                    ["my-builds", "compare", "part-gallery"].includes(item.id)
-                      ? "#666"
-                      : "inherit",
-                }}
-              >
-                {getNavIcon(item.id)}
-                <ListItemText primary={item.label} />
-              </NavigationButton>
-            </Link>
+          <ListItem key={item.id} disablePadding>
+            <NavigationButton
+              component={Link}
+              href={item.href}
+              disabled={
+                !isAuthenticated &&
+                ["my‑builds", "compare", "part-gallery"].includes(item.id)
+              }
+              sx={{
+                textDecoration: "none",
+                width: "100%",
+              }}
+            >
+              {getNavIcon(item.id)}
+              <ListItemText primary={item.label} />
+            </NavigationButton>
           </ListItem>
         ))}
       </NavigationList>

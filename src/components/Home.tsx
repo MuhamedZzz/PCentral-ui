@@ -283,7 +283,7 @@ const HeroSection: React.FC<HeroProps> = ({ className }) => {
           right={(part.position as any).right}
           bottom={part.position.bottom}
           $duration={part.animation.duration}
-          delay={part.animation.delay}
+          $delay={part.animation.delay}
         >
           <Box
             component="img"
@@ -295,7 +295,6 @@ const HeroSection: React.FC<HeroProps> = ({ className }) => {
               objectFit: "contain",
             }}
             onError={(e) => {
-              // Fallback to a colored box if image fails to load
               const img = e.target as HTMLImageElement;
               img.style.display = "none";
               const fallback = document.createElement("div");
