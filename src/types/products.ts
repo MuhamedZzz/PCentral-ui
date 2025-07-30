@@ -46,7 +46,6 @@ export interface ProductsPageProps {
   className?: string;
 }
 
-// Filter types
 export interface PriceFilter {
   min: number;
   max: number;
@@ -58,7 +57,6 @@ export interface FilterState {
   searchQuery: string;
 }
 
-// Manufacturer mapping for logos
 export interface ManufacturerInfo {
   name: string;
   logo: string;

@@ -1,16 +1,13 @@
-// types/auth.ts
 export interface AuthFormData {
   email: string;
   password: string;
 }
 
-// Response from login/register endpoints
 export interface AuthResponse {
   token: string;
   email: string;
 }
 
-// Response from /api/users/me endpoint
 export interface UserData {
   id: number;
   username: string;

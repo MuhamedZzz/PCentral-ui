@@ -27,16 +27,13 @@ api.interceptors.request.use(
   }
 );
 
-// Add response interceptor to handle errors
 api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      // Token expired or invalid, remove it
       if (typeof window !== "undefined") {
         document.cookie =
           "authToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-        // Optionally redirect to login or refresh page
       }
     }
     return Promise.reject(error);

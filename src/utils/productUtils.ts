@@ -1,13 +1,9 @@
-// utils/productUtils.ts
-
 import { Product } from "../types/products";
 import { MANUFACTURER_INFO } from "../constants/products";
 
-// Extract manufacturer from product name
 export const extractManufacturer = (productName: string): string => {
   const name = productName.toLowerCase();
 
-  // Common manufacturer patterns
   const manufacturers = Object.keys(MANUFACTURER_INFO);
 
   for (const manufacturer of manufacturers) {
@@ -16,7 +12,6 @@ export const extractManufacturer = (productName: string): string => {
     }
   }
 
-  // Try to extract first word as manufacturer
   const firstWord = productName.split(" ")[0].toLowerCase();
   if (MANUFACTURER_INFO[firstWord]) {
     return firstWord;
@@ -25,13 +20,11 @@ export const extractManufacturer = (productName: string): string => {
   return "unknown";
 };
 
-// Get manufacturer info
 export const getManufacturerInfo = (productName: string) => {
   const manufacturer = extractManufacturer(productName);
   return MANUFACTURER_INFO[manufacturer] || MANUFACTURER_INFO.unknown;
 };
 
-// Format price
 export const formatPrice = (price: number): string => {
   return new Intl.NumberFormat("en-US", {
     style: "currency",
@@ -39,7 +32,6 @@ export const formatPrice = (price: number): string => {
   }).format(price);
 };
 
-// Format property key for display
 export const formatPropertyKey = (key: string): string => {
   return key
     .split("_")
@@ -47,16 +39,13 @@ export const formatPropertyKey = (key: string): string => {
     .join(" ");
 };
 
-// Format property value for display
 export const formatPropertyValue = (key: string, value: any): string => {
   if (value === null || value === undefined) return "N/A";
 
-  // Handle boolean values
   if (typeof value === "boolean") {
     return value ? "Yes" : "No";
   }
 
-  // Handle numeric values with units
   if (typeof value === "number") {
     switch (key) {
       case "price":
@@ -98,7 +87,6 @@ export const formatPropertyValue = (key: string, value: any): string => {
   return value.toString();
 };
 
-// Filter products by search query
 export const filterProductsBySearch = (
   products: Product[],
   query: string
@@ -114,7 +102,6 @@ export const filterProductsBySearch = (
   );
 };
 
-// Filter products by price range
 export const filterProductsByPrice = (
   products: Product[],
   min: number,
@@ -125,7 +112,6 @@ export const filterProductsByPrice = (
   );
 };
 
-// Filter products by manufacturers
 export const filterProductsByManufacturers = (
   products: Product[],
   manufacturers: string[]
@@ -138,7 +124,6 @@ export const filterProductsByManufacturers = (
   });
 };
 
-// Get unique manufacturers from products
 export const getUniqueManufacturers = (products: Product[]): string[] => {
   const manufacturers = new Set<string>();
   products.forEach((product) => {
@@ -147,7 +132,6 @@ export const getUniqueManufacturers = (products: Product[]): string[] => {
   return Array.from(manufacturers).sort();
 };
 
-// Sort products
 export const sortProducts = (
   products: Product[],
   sortBy: "name" | "price-low" | "price-high"
@@ -166,7 +150,6 @@ export const sortProducts = (
   }
 };
 
-// Paginate products
 export const paginateProducts = (
   products: Product[],
   page: number,
@@ -182,9 +165,7 @@ export const paginateProducts = (
   };
 };
 
-// Generate fallback image for product
 export const generateProductImage = (product: Product): string => {
-  // Use category-specific images
   const categoryImages: Record<string, string> = {
     cpu: "/product-images/cpu.png",
     memory: "/product-images/memory.png",
@@ -213,6 +194,5 @@ export const generateProductImage = (product: Product): string => {
     wirelessnetworkcard: "/product-images/wirelessnetworkcard.png",
   };
 
-  // Return category-specific image or fallback
   return categoryImages[product.category] || "/images/default.png";
 };

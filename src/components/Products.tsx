@@ -5,7 +5,6 @@ import {
   Box,
   Container,
   Typography,
-  Grid,
   Card,
   CardContent,
   CardMedia,
@@ -31,6 +30,7 @@ import {
   ListItem,
   ListItemText,
 } from "@mui/material";
+import Grid from "@mui/material/Grid";
 import { styled } from "@mui/material/styles";
 import CloseIcon from "@mui/icons-material/Close";
 import SearchIcon from "@mui/icons-material/Search";
@@ -63,7 +63,6 @@ import {
 } from "../utils/productUtils";
 import api from "@/utils/axios";
 
-// Styled Components
 const PageContainer = styled(Box)(() => ({
   minHeight: "100vh",
   background: `
@@ -174,7 +173,7 @@ const ProductCard = styled(Card)(() => ({
   backdropFilter: "blur(10px)",
   border: "1px solid rgba(255, 255, 255, 0.1)",
   borderRadius: "16px",
-  height: "400px", // Fixed height for all cards
+  height: "400px",
   width: "250px",
   display: "flex",
   flexDirection: "column",
@@ -290,7 +289,6 @@ const ResultsInfo = styled(Typography)(() => ({
 }));
 
 const ProductsPage: React.FC<ProductsPageProps> = ({ className }) => {
-  // State
   const [categories, setCategories] = useState<string[]>([]);
   const [selectedCategory, setSelectedCategory] = useState(DEFAULT_CATEGORY);
   const [products, setProducts] = useState<Product[]>([]);
@@ -305,14 +303,12 @@ const ProductsPage: React.FC<ProductsPageProps> = ({ className }) => {
     "name"
   );
 
-  // Filter state
   const [filters, setFilters] = useState<FilterState>({
     priceRange: { min: 0, max: Infinity },
     manufacturers: [],
     searchQuery: "",
   });
 
-  // Fetch categories
   useEffect(() => {
     const fetchCategories = async () => {
       setCategoriesLoading(true);
@@ -330,7 +326,6 @@ const ProductsPage: React.FC<ProductsPageProps> = ({ className }) => {
     fetchCategories();
   }, []);
 
-  // Fetch products by category
   const fetchProducts = useCallback(async (category: string) => {
     try {
       setLoading(true);
@@ -354,41 +349,33 @@ const ProductsPage: React.FC<ProductsPageProps> = ({ className }) => {
     }
   }, []);
 
-  // Fetch products when category changes
   useEffect(() => {
     if (selectedCategory) {
       fetchProducts(selectedCategory);
     }
   }, [selectedCategory, fetchProducts]);
 
-  // Apply filters
   useEffect(() => {
     let filtered = [...products];
 
-    // Apply search filter
     filtered = filterProductsBySearch(filtered, filters.searchQuery);
 
-    // Apply price filter
     filtered = filterProductsByPrice(
       filtered,
       filters.priceRange.min,
       filters.priceRange.max
     );
 
-    // Apply manufacturer filter
     filtered = filterProductsByManufacturers(filtered, filters.manufacturers);
 
-    // Apply sorting
     filtered = sortProducts(filtered, sortBy);
 
     setFilteredProducts(filtered);
-    setCurrentPage(1); // Reset pagination when filters change
+    setCurrentPage(1);
   }, [products, filters, sortBy]);
 
-  // Handle category change
   const handleCategoryChange = (category: string) => {
     setSelectedCategory(category);
-    // Reset filters when changing category
     setFilters({
       priceRange: { min: 0, max: Infinity },
       manufacturers: [],
@@ -396,7 +383,6 @@ const ProductsPage: React.FC<ProductsPageProps> = ({ className }) => {
     });
   };
 
-  // Handle filter changes
   const handleSearchChange = (query: string) => {
     setFilters((prev) => ({ ...prev, searchQuery: query }));
   };
@@ -414,7 +400,6 @@ const ProductsPage: React.FC<ProductsPageProps> = ({ className }) => {
     }));
   };
 
-  // Handle product selection
   const handleProductClick = (product: Product) => {
     setSelectedProduct(product);
     setModalOpen(true);
@@ -425,7 +410,6 @@ const ProductsPage: React.FC<ProductsPageProps> = ({ className }) => {
     setSelectedProduct(null);
   };
 
-  // Pagination
   const paginationResult = paginateProducts(
     filteredProducts,
     currentPage,
@@ -434,7 +418,6 @@ const ProductsPage: React.FC<ProductsPageProps> = ({ className }) => {
   const displayedProducts = paginationResult.items;
   const totalPages = paginationResult.totalPages;
 
-  // Get unique manufacturers for current products
   const availableManufacturers = getUniqueManufacturers(products);
 
   if (categoriesLoading) {

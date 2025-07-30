@@ -30,9 +30,9 @@ export const NAVIGATION_ITEMS: NavigationItem[] = [
 
 export const SOCIAL_LINKS: SocialLink[] = [
   {
-    platform: "discord",
-    href: "http://discordapp.com/users/950062965980299377",
-    icon: "discord",
+    platform: "github",
+    href: "https://github.com/MuhamedZzz",
+    icon: "Github",
   },
   {
     platform: "linkedin",

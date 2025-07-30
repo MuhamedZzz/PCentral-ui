@@ -1,4 +1,3 @@
-// types/sidebar.ts
 export interface NavigationItem {
   id: string;
   label: string;
@@ -7,7 +6,7 @@ export interface NavigationItem {
 }
 
 export interface SocialLink {
-  platform: "discord" | "linkedin";
+  platform: "github" | "linkedin";
   href: string;
   icon: string;
 }

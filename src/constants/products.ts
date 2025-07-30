@@ -1,14 +1,9 @@
-// constants/products.ts
-
 import { ManufacturerMap } from "../types/products";
 
-// Default category when page loads
 export const DEFAULT_CATEGORY = "motherboard";
 
-// Items per page for pagination
 export const ITEMS_PER_PAGE = 12;
 
-// Category display names mapping
 export const CATEGORY_DISPLAY_NAMES: Record<string, string> = {
   caseaccessory: "Case Accessories",
   casefan: "Case Fans",
@@ -37,9 +32,7 @@ export const CATEGORY_DISPLAY_NAMES: Record<string, string> = {
   wirelessnetworkcard: "Wireless Cards",
 };
 
-// Common manufacturers and their info
 export const MANUFACTURER_INFO: ManufacturerMap = {
-  // CPU Manufacturers
   intel: {
     name: "Intel",
     logo: "🔵",
@@ -51,7 +44,6 @@ export const MANUFACTURER_INFO: ManufacturerMap = {
     color: "#ed1c24",
   },
 
-  // GPU Manufacturers
   nvidia: {
     name: "NVIDIA",
     logo: "🟢",
@@ -63,7 +55,6 @@ export const MANUFACTURER_INFO: ManufacturerMap = {
     color: "#ed1c24",
   },
 
-  // Memory Manufacturers
   corsair: {
     name: "Corsair",
     logo: "⚫",
@@ -79,8 +70,6 @@ export const MANUFACTURER_INFO: ManufacturerMap = {
     logo: "🔵",
     color: "#e31e24",
   },
-
-  // Motherboard Manufacturers
   asus: {
     name: "ASUS",
     logo: "🟡",
@@ -102,7 +91,6 @@ export const MANUFACTURER_INFO: ManufacturerMap = {
     color: "#666666",
   },
 
-  // PSU Manufacturers
   evga: {
     name: "EVGA",
     logo: "🟢",
@@ -113,8 +101,6 @@ export const MANUFACTURER_INFO: ManufacturerMap = {
     logo: "🔵",
     color: "#1e4d6b",
   },
-
-  // Storage Manufacturers
   samsung: {
     name: "Samsung",
     logo: "🔵",
@@ -130,8 +116,6 @@ export const MANUFACTURER_INFO: ManufacturerMap = {
     logo: "🟢",
     color: "#00b04f",
   },
-
-  // Cooling Manufacturers
   noctua: {
     name: "Noctua",
     logo: "🤎",
@@ -142,8 +126,6 @@ export const MANUFACTURER_INFO: ManufacturerMap = {
     logo: "🔵",
     color: "#662d91",
   },
-
-  // Peripherals
   logitech: {
     name: "Logitech",
     logo: "🔵",
@@ -159,8 +141,6 @@ export const MANUFACTURER_INFO: ManufacturerMap = {
     logo: "🟠",
     color: "#ff6900",
   },
-
-  // Default fallback
   unknown: {
     name: "Unknown",
     logo: "⚪",
@@ -168,7 +148,6 @@ export const MANUFACTURER_INFO: ManufacturerMap = {
   },
 };
 
-// Price ranges for filtering
 export const PRICE_RANGES = [
   { label: "All Prices", min: 0, max: Infinity },
   { label: "Under $50", min: 0, max: 50 },
@@ -179,7 +158,6 @@ export const PRICE_RANGES = [
   { label: "$1000+", min: 1000, max: Infinity },
 ];
 
-// Common property keys that should be displayed prominently
 export const IMPORTANT_PROPERTIES: Record<string, string[]> = {
   cpu: ["cores", "threads", "base_clock", "boost_clock", "tdp", "socket"],
   memory: ["speed", "modules", "color", "first_word_latency", "cas_latency"],

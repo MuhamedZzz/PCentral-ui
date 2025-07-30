@@ -29,10 +29,10 @@ import ComputerIcon from "@mui/icons-material/Computer";
 import CompareArrowsIcon from "@mui/icons-material/CompareArrows";
 import PhotoLibraryIcon from "@mui/icons-material/PhotoLibrary";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
+import GithubIcon from "@mui/icons-material/GitHub";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import LogoutIcon from "@mui/icons-material/Logout";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import { FaDiscord } from "react-icons/fa";
 import { SidebarProps } from "../types/sidebar";
 import { authService } from "../services/authServices";
 import { cookieUtils } from "../utils/cookies";
@@ -105,13 +105,13 @@ const SocialButton = styled(Button)<ButtonProps>(({ theme }) => ({
   "& .MuiSvgIcon-root, & svg": {
     color: "inherit",
   },
-  "&.discord": {
-    backgroundColor: "rgba(88,101,242,0.18)",
+  "&.github": {
+    backgroundColor: "#3b3f44",
     "& .MuiSvgIcon-root, & svg": {
-      color: "#5865F2",
+      color: "#24292e",
     },
     "&:hover": {
-      backgroundColor: "rgba(88,101,242,0.32)",
+      backgroundColor: "#444b52",
     },
   },
   "&.linkedin": {
@@ -244,7 +244,6 @@ const FooterLink = styled(Link)(() => ({
   },
 }));
 
-// Updated interface to include auth modal handler
 interface ExtendedSidebarProps extends SidebarProps {
   onOpenAuthModal: (mode: "login" | "signup") => void;
 }
@@ -261,12 +260,10 @@ const Sidebar: React.FC<ExtendedSidebarProps> = ({
   const [profileMenuAnchorEl, setProfileMenuAnchorEl] =
     useState<null | HTMLElement>(null);
 
-  // Fetch user data when authenticated
   const fetchUserData = async () => {
     try {
       const userData = await authService.getUserData();
 
-      // Store user data in cookies
       cookieUtils.set("id", userData.id.toString(), 7);
       cookieUtils.set("username", userData.username, 7);
       cookieUtils.set("bio", userData.bio || "", 7);
@@ -276,14 +273,12 @@ const Sidebar: React.FC<ExtendedSidebarProps> = ({
       setUserDataLoaded(true);
     } catch (error) {
       console.error("Failed to fetch user data:", error);
-      // If fetching fails, try to get from cookies as fallback
       const storedUsername = cookieUtils.get("userName") || "";
       setUsername(storedUsername);
       setUserDataLoaded(true);
     }
   };
 
-  // Check authentication status on component mount
   useEffect(() => {
     const checkAuthStatus = async () => {
       const authToken = cookieUtils.get("authToken");
@@ -301,15 +296,12 @@ const Sidebar: React.FC<ExtendedSidebarProps> = ({
       }
     };
 
-    // Run immediately
     checkAuthStatus();
 
-    // Then every second to keep auth state in sync
     const interval = setInterval(checkAuthStatus, 1000);
     return () => clearInterval(interval);
   }, [isAuthenticated]);
 
-  // Handle profile menu
   const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setProfileMenuAnchorEl(event.currentTarget);
   };
@@ -318,7 +310,6 @@ const Sidebar: React.FC<ExtendedSidebarProps> = ({
     setProfileMenuAnchorEl(null);
   };
 
-  // Handle logout
   const handleLogout = () => {
     cookieUtils.remove("authToken");
     cookieUtils.remove("username");
@@ -333,13 +324,11 @@ const Sidebar: React.FC<ExtendedSidebarProps> = ({
     window.location.href = "/";
   };
 
-  // Handle profile navigation
   const handleProfileClick = () => {
     window.location.href = "/profile";
     handleProfileMenuClose();
   };
 
-  // Map navigation item id to icon
   const getNavIcon = (id: string) => {
     switch (id) {
       case "pc-builder":
@@ -357,11 +346,10 @@ const Sidebar: React.FC<ExtendedSidebarProps> = ({
     }
   };
 
-  // Social icon mapping
   const getSocialIcon = (platform: string) => {
     switch (platform) {
-      case "discord":
-        return <FaDiscord />;
+      case "github":
+        return <GithubIcon />;
       case "linkedin":
         return <LinkedInIcon sx={{ fontSize: 28 }} />;
       default:
@@ -369,11 +357,10 @@ const Sidebar: React.FC<ExtendedSidebarProps> = ({
     }
   };
 
-  // Social button label mapping
   const getSocialLabel = (platform: string) => {
     switch (platform) {
-      case "discord":
-        return "Discord";
+      case "github":
+        return "GitHub";
       case "linkedin":
         return "LinkedIn";
       default:
@@ -381,7 +368,6 @@ const Sidebar: React.FC<ExtendedSidebarProps> = ({
     }
   };
 
-  // Ensure required navigation items exist
   const requiredNavIds = [
     "pc-builder",
     "products",
@@ -431,7 +417,6 @@ const Sidebar: React.FC<ExtendedSidebarProps> = ({
             key={social.platform}
             component={Link}
             href={social.href}
-            target="_blank"
             rel="noopener noreferrer"
             className={social.platform}
             startIcon={getSocialIcon(social.platform)}

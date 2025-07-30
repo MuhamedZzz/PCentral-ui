@@ -41,7 +41,6 @@ const shimmer = keyframes`
   100% { background-position: 200% 0; }
 `;
 
-// Styled Components
 const HeroContainer = styled(Box)(() => ({
   minHeight: "100vh",
   background: `
@@ -376,7 +375,6 @@ const HeroSection: React.FC<HeroProps> = ({ className }) => {
                   image={build.image}
                   title={build.name}
                   onError={(e) => {
-                    // Fallback background for missing images
                     const element = e.target as HTMLElement;
                     element.style.background = `linear-gradient(135deg, #e91e63, #1a1a1a)`;
                   }}
