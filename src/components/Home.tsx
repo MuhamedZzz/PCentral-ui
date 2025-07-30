@@ -41,7 +41,6 @@ const shimmer = keyframes`
   100% { background-position: 200% 0; }
 `;
 
-// Styled Components
 const HeroContainer = styled(Box)(() => ({
   minHeight: "100vh",
   background: `
@@ -283,7 +282,7 @@ const HeroSection: React.FC<HeroProps> = ({ className }) => {
           right={(part.position as any).right}
           bottom={part.position.bottom}
           $duration={part.animation.duration}
-          delay={part.animation.delay}
+          $delay={part.animation.delay}
         >
           <Box
             component="img"
@@ -295,7 +294,6 @@ const HeroSection: React.FC<HeroProps> = ({ className }) => {
               objectFit: "contain",
             }}
             onError={(e) => {
-              // Fallback to a colored box if image fails to load
               const img = e.target as HTMLImageElement;
               img.style.display = "none";
               const fallback = document.createElement("div");
@@ -377,7 +375,6 @@ const HeroSection: React.FC<HeroProps> = ({ className }) => {
                   image={build.image}
                   title={build.name}
                   onError={(e) => {
-                    // Fallback background for missing images
                     const element = e.target as HTMLElement;
                     element.style.background = `linear-gradient(135deg, #e91e63, #1a1a1a)`;
                   }}

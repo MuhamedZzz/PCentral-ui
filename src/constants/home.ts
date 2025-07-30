@@ -4,10 +4,10 @@ export const FLOATING_PARTS: FloatingPart[] = [
   {
     id: "motherboard",
     name: "Motherboard",
-    image: "/parts/motherboard.png", // You'll need to add these images
+    image: "/parts/motherboard.png",
     position: { top: "15%", left: "15%", bottom: "", right: "" },
     animation: { duration: "6s", delay: "0s" },
-    size: { width: 200, height: 180 }, // increased size
+    size: { width: 200, height: 180 },
   },
   {
     id: "gpu",
@@ -15,7 +15,7 @@ export const FLOATING_PARTS: FloatingPart[] = [
     image: "/parts/gpu.png",
     position: { top: "25%", right: "14%", bottom: "", left: "" },
     animation: { duration: "8s", delay: "1s" },
-    size: { width: 230, height: 185 }, // increased size
+    size: { width: 230, height: 185 },
   },
   {
     id: "cpu-cooler",
@@ -23,7 +23,7 @@ export const FLOATING_PARTS: FloatingPart[] = [
     image: "/parts/cpu-cooler.png",
     position: { bottom: "25%", right: "18%", top: "", left: "" },
     animation: { duration: "7s", delay: "2s" },
-    size: { width: 170, height: 200 }, // increased size
+    size: { width: 170, height: 200 },
   },
   {
     id: "ram",
@@ -31,7 +31,7 @@ export const FLOATING_PARTS: FloatingPart[] = [
     image: "/parts/psu.png",
     position: { bottom: "15%", left: "15%", top: "", right: "" },
     animation: { duration: "5s", delay: "1.5s" },
-    size: { width: 240, height: 250 }, // increased size
+    size: { width: 240, height: 250 },
   },
 ];
 

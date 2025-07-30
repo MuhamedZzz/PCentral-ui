@@ -35,7 +35,7 @@ const MainContainer = styled(Box)(() => ({
 
 const ContentContainer = styled(Box)(() => ({
   flexGrow: 1,
-  marginLeft: "0px", // Match SIDEBAR_WIDTH in Sidebar.tsx
+  marginLeft: "0px",
   minHeight: "100vh",
   backgroundColor: "#0a0a0a",
 }));

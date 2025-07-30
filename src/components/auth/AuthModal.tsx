@@ -1,4 +1,3 @@
-// components/auth/AuthModal.tsx
 "use client";
 
 import React, { useState } from "react";
@@ -77,13 +76,11 @@ const AuthModal: React.FC<AuthModalProps> = ({
 
       console.log("Auth response:", response);
 
-      // Store token and email from auth response
       cookieUtils.set("authToken", response.token, 7);
       cookieUtils.set("email", response.email, 7);
 
       console.log("Cookies set, fetching user data...");
 
-      // Fetch user data from /api/users/me endpoint using the token directly
       try {
         const userData = await authService.getUserData(response.token);
         console.log("User data fetched:", userData);
@@ -94,13 +91,11 @@ const AuthModal: React.FC<AuthModalProps> = ({
             : "Account created successfully!"
         );
 
-        // Close modal after success
         setTimeout(() => {
           onClose();
           setSuccess(null);
         }, 1500);
       } catch (userDataError) {
-        // If fetching user data fails, still consider auth successful but show warning
         console.error("Failed to fetch user data:", userDataError);
         setSuccess(
           mode === "login"

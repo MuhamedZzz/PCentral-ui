@@ -185,11 +185,9 @@ const Profile: React.FC = () => {
   const loadProfile = async () => {
     try {
       setLoading(true);
-      // First try to get from API
       const profileData = await profileService.getProfile();
       setProfile(profileData);
     } catch (error) {
-      // Fallback to cookies if API fails
       const cookieProfile: UserProfile = {
         id: parseInt(cookieUtils.get("id") || "0"),
         username: cookieUtils.get("username") || "",
@@ -228,7 +226,6 @@ const Profile: React.FC = () => {
       setEditingUsername(false);
       setSuccess("Username updated successfully!");
 
-      // Update cookies
       cookieUtils.set("username", updatedProfile.username, 7);
 
       setTimeout(() => setSuccess(null), 3000);
@@ -255,7 +252,6 @@ const Profile: React.FC = () => {
       setEditingBio(false);
       setSuccess("Bio updated successfully!");
 
-      // Update cookies
       cookieUtils.set("bio", updatedProfile.bio || "", 7);
 
       setTimeout(() => setSuccess(null), 3000);
