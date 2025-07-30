@@ -1,6 +1,6 @@
 import { ManufacturerMap } from "../types/products";
 
-export const DEFAULT_CATEGORY = "motherboard";
+export const DEFAULT_CATEGORY = "videocard";
 
 export const ITEMS_PER_PAGE = 12;
 
@@ -26,7 +26,7 @@ export const CATEGORY_DISPLAY_NAMES: Record<string, string> = {
   speakers: "Speakers",
   thermalpaste: "Thermal Paste",
   ups: "UPS Systems",
-  videocard: "Graphics Cards",
+  videocard: "GPU",
   webcam: "Webcams",
   wirednetworkcard: "Network Cards",
   wirelessnetworkcard: "Wireless Cards",
